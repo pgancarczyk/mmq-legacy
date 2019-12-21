@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>mmq</title>
+  </head>
+  <body>
+    <noscript>Włącz obsługę JavaScript w przeglądarce.</noscript>
+    <div id="root"></div>
+  </body>
+  <script>
+    window.rick = function() {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: 'Never Gonna Give You Up',
+          artist: 'Rick Astley',
+          album: 'Whenever You Need Somebody',
+          artwork: [
+            {src: 'rick-96_x_96.jpg', sizes: '96x96', type: 'image/jpeg'},
+            {src: 'rick-128_x_128.jpg', sizes: '128x128', type: 'image/jpeg'},
+            {src: 'rick-192_x_192.jpg', sizes: '192x192', type: 'image/jpeg'},
+            {src: 'rick-256_x_256.jpg', sizes: '256x256', type: 'image/jpeg'},
+            {src: 'rick-384_x_384.jpg', sizes: '384x384', type: 'image/jpeg'},
+            {src: 'rick-512_x_512.jpg', sizes: '512x512', type: 'image/jpeg'},
+          ]
+        });
+        navigator.mediaSession.playbackState = 'playing';
+        navigator.mediaSession.setActionHandler('pause', function() {});
+      }
+    }
+  </script>
+</html>
