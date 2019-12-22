@@ -1,5 +1,7 @@
 const Sequelize = require("sequelize");
 const Model = Sequelize.Model;
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 var sequelize = require("../src/scripts/db");
 
@@ -15,7 +17,7 @@ User.init({
         defaultValue: 'USER'
     },
     hash: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1024),
         allowNull: false
     },
     salt: {
@@ -26,6 +28,33 @@ User.init({
     sequelize,
     modelName: 'user'
 });
+
 User.sync({alter: process.env.NODE_ENV === 'dev'});
+
+User.prototype.validatePassword = function(password) {
+    const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+    return this.hash === hash;
+}
+User.prototype.setPassword = function(password) {
+    this.salt = crypto.randomBytes(16).toString('hex');
+    this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+}
+User.prototype.generateJWT = function() {
+    const today = new Date();
+    const expirationDate = new Date(today);
+    expirationDate.setDate(today.getDate() + 60);
+
+    return jwt.sign({
+        id: this.id,
+        exp: parseInt(expirationDate.getTime()/1000, 10)
+    }, 'secret');
+}
+User.prototype.getAuthData = function() {
+    return {
+        name: this.name,
+        role: this.role,
+        token: this.generateJWT()
+    }
+}
 
 module.exports = User;

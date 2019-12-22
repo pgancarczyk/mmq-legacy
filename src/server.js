@@ -1,41 +1,28 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors = require('cors')
+var bodyParser = require('body-parser');
 require('dotenv').config();
 
 var apiRouter = require('../routes/api');
 
 var server = express();
-server.use(cors());
 
-server.use(logger('dev'));
 server.use(express.json());
-server.use(express.urlencoded({ extended: false }));
-server.use(cookieParser());
+server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, 'client/build')));
 
 server.use('/api', apiRouter);
-server.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
 
-// catch 404 and forward to error handler
-server.use(function(req, res, next) {
-  next(createError(404));
+// catch 404
+server.use(function(req, res) {
+  res.status(404).end();
 });
 
 // error handler
-server.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
+server.use(function(err, req, res) {
   res.status(err.status || 500);
-  res.render('error');
+  res.json({ error: process.env.NODE_ENV === 'dev' ? err : "something went wrong"});
 });
 
 module.exports = server;
