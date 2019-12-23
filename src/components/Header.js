@@ -4,9 +4,6 @@ class Header extends Component {
     render() {
         let color;
         switch (this.props.guessed) {
-            case "none":
-                color = "text-light";
-                break;
             case "both":
                 color = "text-warning";
                 break;
@@ -16,6 +13,8 @@ class Header extends Component {
             case "author":
                 color = "text-success";
                 break;
+            default:
+                color = "text-light";
         }
 
         return(
@@ -42,7 +41,7 @@ class Header extends Component {
                 </div>
                 <div className="navbar navbar-dark bg-dark shadow-sm">
                     <div className="container d-flex justify-content-between">
-                        <a href="#" className={"navbar-brand d-flex align-items-center "+color}>
+                        <a href="#top" className={"navbar-brand d-flex align-items-center "+color}>
                             <strong>mmq</strong>
                         </a>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"

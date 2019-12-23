@@ -4,9 +4,6 @@ class Progress extends Component {
     render() {
         let bg;
         switch (this.props.guessed) {
-            case "none":
-                bg = "bg-danger";
-                break;
             case "both":
                 bg = "bg-warning";
                 break;
@@ -16,6 +13,8 @@ class Progress extends Component {
             case "author":
                 bg = "bg-success";
                 break;
+            default:
+                bg = "bg-danger";
         }
         let width = { "width": this.props.progress+"%" };
 

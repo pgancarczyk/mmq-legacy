@@ -74,3 +74,55 @@ li {
 .ytp-show-cards-title {
   display: none;
 }
+
+.form-login, .form-guest {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-login .checkbox {
+  font-weight: 400;
+}
+.form-login .form-control, .form-guest .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 14px;
+}
+.form-login .form-control:focus, .form-guest .form-control:focus {
+  z-index: 2;
+}
+.form-login input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-login input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+body.modal-open {
+  overflow: auto;
+}
+body.modal-open[style] {
+  padding-right: 0px !important;
+}
+
+.modal::-webkit-scrollbar {
+  width: 0 !important; /*removes the scrollbar but still scrollable*/
+  /* reference: http://stackoverflow.com/a/26500272/2259400 */
+}
+
+.modal-body {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+}
+
+.loginMsg {
+  margin-bottom: 0px;
+}

@@ -6,7 +6,7 @@ class Footer extends Component {
             <footer className="text-muted">
                 <div className="container">
                     <p className="float-right">
-                        <a href="#" className="text-info">w górę</a>
+                        <a href="#top" className="text-info">w górę</a>
                     </p>
                     <p>Stworzono w 2019 roku w Krakowie jako element pracy inżynierskiej.</p>
                 </div>

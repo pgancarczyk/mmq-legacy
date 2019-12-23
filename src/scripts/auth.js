@@ -1,4 +1,5 @@
 const jwt = require('express-jwt');
+const User = require('../../models/User');
 
 const getTokenFromHeaders = (req) => {
     const { headers: { authorization }} = req;
@@ -10,14 +11,20 @@ const getTokenFromHeaders = (req) => {
 
 const auth = {
     required: jwt({
-        secret: 'secret',
-        getToken: getTokenFromHeaders
+        secret: process.env.TOKEN_SECRET,
+        getToken: getTokenFromHeaders,
+        requestProperty: 'auth'
     }),
     optional: jwt({
-        secret: 'secret',
+        secret: process.env.TOKEN_SECRET,
         getToken: getTokenFromHeaders,
         credentialsRequired: false
     }),
+    user: (req) => {
+        req.user = User.findByPk(req.auth.id, {logging: true, raw: true});
+        console.log(req.user);
+        return req;
+    }
 };
 
 module.exports = auth;

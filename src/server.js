@@ -1,28 +1,28 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser');
 require('dotenv').config();
 
-var apiRouter = require('../routes/api');
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+var cors = require('cors');
 
-var server = express();
+const server = express();
 
+server.use(cors({credentials: true, origin: true}));
 server.use(express.json());
 server.use(bodyParser.json());
-server.use(express.static(path.join(__dirname, 'client/build')));
 
+server.use(express.static(path.join(__dirname, 'client/build')));
+const apiRouter = require('../routes/api');
 server.use('/api', apiRouter);
 
-// catch 404
-server.use(function(req, res) {
-  res.status(404).end();
-});
 
 // error handler
-server.use(function(err, req, res) {
-  res.status(err.status || 500);
-  res.json({ error: process.env.NODE_ENV === 'dev' ? err : "something went wrong"});
+server.use((err, req, res, next) => {
+  if(!res.headersSent) {
+      res.status(err.status || 500);
+      res.json({error: process.env.NODE_ENV === 'dev' ? err : "something went wrong"});
+  }
+  next();
 });
 
 module.exports = server;

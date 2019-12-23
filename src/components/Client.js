@@ -7,8 +7,50 @@ import Footer from "./Footer";
 import History from "./History";
 import Progress from "./Progress";
 import levenshteinDistance from "../scripts/levenshteinDistance";
+import Login from "./Login";
+import $ from 'jquery';
+const api = require('../scripts/api');
 
 class Client extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            response: " ",
+            progress: 0,
+            guessed: "none",
+            title: [["swan"], ["lake"]],
+            author: [["tchaikovsky"]],
+            videoId: "", // "9rJoB7y6Ncs",
+            role: "",
+            name: "",
+            loginMsg: " "
+        }
+    }
+
+    login(name, password) {
+        let body = {
+            user: {
+                name: name,
+                password: password
+            }
+        }
+        api.call('login', 'POST', body).then(res => {
+            if (res.user) {
+                this.setState({
+                    role: res.user.role,
+                    name: res.user.name
+                })
+                api.token = res.user.token;
+                $('#loginModal').modal('hide');
+            } else {
+                if(res.message === 'name and password combination incorrect') {
+                    this.setState({loginMsg: 'Nieprawidłowa nazwa użytkownika lub hasło.'});
+                }
+                else this.setState({loginMsg: res.message});
+            }
+        });
+    }
+
     guess(input) {
         let author = this.state.author;
         let title = this.state.title;
@@ -18,22 +60,19 @@ class Client extends Component {
 
         for (let gWord of input.split(" ")) {
             for (const[index, tWords] of title.entries()) {
-                tWords:
                     for(let tWord of tWords) {
                         if(this.compareWords(gWord, tWord)) {
                             title.splice(index, 1);
                             response = "Brawo, ale potrzeba więcej!";
-                            break tWords;
+                            break;
                         }
                     }
             }
             for (const[index, aWords] of author.entries()) {
-                aWords:
                     for(let aWord of aWords) {
                         if(this.compareWords(gWord, aWord)) {
                             author.splice(index, 1);
                             response = "Brawo, ale potrzeba więcej!";
-                            break aWords;
                         }
                     }
             }
@@ -57,21 +96,9 @@ class Client extends Component {
         this.setState({response: response, author: author, title: title, guessed: guessed});
     }
 
-  constructor() {
-    super({});
-    this.state = {
-      response: " ",
-      progress: 0,
-      guessed: "none",
-      title: [["swan"], ["lake"]],
-      author: [["tchaikovsky"]],
-      videoId: "9rJoB7y6Ncs",
-    }
-  }
-
   compareWords(word1, word2) {
-      word1 = word1.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '').toLowerCase();
-      word2 = word2.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '').toLocaleLowerCase();
+      word1 = word1.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '').toLowerCase();
+      word2 = word2.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '').toLowerCase();
       word1 = word1.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       word2 = word2.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       console.log(word1 + " vs " + word2);
@@ -98,42 +125,46 @@ class Client extends Component {
   }
 
   render() {
-    return (
-        <div className="App">
-          <Header guessed={this.state.guessed}/>
-          <main role="main">
-            <section className="jumbotron text-center">
-              <div className="container">
-                <Player response={this.state.response} videoId={this.state.videoId} start={30} end={30}/>
-              </div>
-            </section>
-            <Progress progress={this.state.progress} guessed={this.state.guessed}/>
-            <div className="album py-7 bg-light">
-              <div className="container">
-                <div className="row">
-                  <div className="col">
-                    <div className="card-transaprent mb-4">
-                      <History/>
-                    </div>
-                  </div>
-                  <div className="col-6">
-                    <div className="card-transparent mb-5">
-                      <div className="card-body">
-                        <Input callback={this.guess.bind(this)}/>
+      let loginCallbacks = {
+          login: this.login.bind(this)
+      }
+      return (
+          <div className="App">
+              <Login callbacks={loginCallbacks} msg={this.state.loginMsg}/>
+              <Header guessed={this.state.guessed}/>
+              <main role="main">
+                  <section className="jumbotron text-center">
+                      <div className="container">
+                          <Player response={this.state.response} videoId={this.state.videoId} start={30} end={30}/>
                       </div>
-                    </div>
+                  </section>
+                  <Progress progress={this.state.progress} guessed={this.state.guessed}/>
+                  <div className="album py-7 bg-light">
+                      <div className="container">
+                          <div className="row">
+                              <div className="col">
+                                  <div className="card-transaprent mb-4">
+                                      <History/>
+                                  </div>
+                              </div>
+                              <div className="col-6">
+                                  <div className="card-transparent mb-5">
+                                      <div className="card-body">
+                                          <Input callback={this.guess.bind(this)}/>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div className="col">
+                                  <div className="card-transparent mb-4">
+                                      <Ranking/>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                  <div className="col">
-                    <div className="card-transparent mb-4">
-                      <Ranking/>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </main>
-          <Footer/>
-        </div>
+              </main>
+              <Footer/>
+          </div>
     )
   }
 
@@ -145,7 +176,7 @@ class Client extends Component {
   }
 
   componentDidMount() {
-      this.getRandVideo();
+      //this.getRandVideo();
       setInterval(this.updateProgress.bind(this), 30*1000/100);
   }
 }

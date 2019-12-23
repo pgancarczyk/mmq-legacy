@@ -26,7 +26,7 @@ User.init({
     }
 }, {
     sequelize,
-    modelName: 'user'
+    modelName: 'user',
 });
 
 User.sync({alter: process.env.NODE_ENV === 'dev'});
@@ -47,7 +47,7 @@ User.prototype.generateJWT = function() {
     return jwt.sign({
         id: this.id,
         exp: parseInt(expirationDate.getTime()/1000, 10)
-    }, 'secret');
+    }, process.env.TOKEN_SECRET);
 }
 User.prototype.getAuthData = function() {
     return {

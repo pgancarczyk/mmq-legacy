@@ -71,6 +71,8 @@ class Player extends Component {
                 window.silence.play();
                 window.hidePlayer();
                 break;
+            default:
+                // do nothing
         }
     }
 }
