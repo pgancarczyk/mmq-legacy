@@ -44,10 +44,15 @@ class Header extends Component {
                         <a href="#top" className={"navbar-brand d-flex align-items-center "+color}>
                             <strong>mmq</strong>
                         </a>
-                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"
-                                aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="font-italic">i</span>
-                        </button>
+                        <div>
+                            <a href="#top" className={"navbar-brand " + (this.props.role === 'GUEST' ? 'text-muted' : 'text-white')}>
+                                <strong>{this.props.name}</strong>
+                            </a>
+                            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"
+                                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                                <span className="font-italic">i</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </header>

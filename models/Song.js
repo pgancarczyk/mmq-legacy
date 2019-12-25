@@ -4,7 +4,7 @@ var sequelize = require("../src/scripts/db");
 
 class Song extends Model {}
 Song.init({
-    author: {
+    artist: {
         type: Sequelize.STRING
     },
     title: {

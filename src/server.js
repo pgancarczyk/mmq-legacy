@@ -20,7 +20,7 @@ server.use('/api', apiRouter);
 server.use((err, req, res, next) => {
   if(!res.headersSent) {
       res.status(err.status || 500);
-      res.json({error: process.env.NODE_ENV === 'dev' ? err : "something went wrong"});
+      res.json({message: process.env.NODE_ENV === 'dev' ? JSON.stringify(err) : "something went wrong"});
   }
   next();
 });

@@ -18,13 +18,23 @@ const auth = {
     optional: jwt({
         secret: process.env.TOKEN_SECRET,
         getToken: getTokenFromHeaders,
+        requestProperty: 'auth',
         credentialsRequired: false
     }),
-    user: (req) => {
-        req.user = User.findByPk(req.auth.id, {logging: true, raw: true});
-        console.log(req.user);
-        return req;
-    }
+    user: (req, res, next) => {
+        if(req.auth) {
+            User.findByPk(req.auth.id).then(user => {
+                req.user = user;
+                next();
+            });
+        }
+        else {
+            if (req.headers.authorization.split(' ')[0] === 'Guest') {
+                req.guestName = req.headers.authorization.split(' ')[1];
+            }
+            next();
+        }
+    },
 };
 
 module.exports = auth;

@@ -1,14 +1,17 @@
 class Api {
-    endpoint = 'http://localhost:5000/api';
+    endpoint = 'http://192.168.55.104:5000/api';
     token = "";
+    guestName = "";
     call(resource, type, body) {
         let headers = { "Content-Type": "application/json" };
         if (this.token) headers.Authorization = "Token " + this.token;
+        else if (this.guestName) headers.Authorization = "Guest " + this.guestName;
         return fetch(this.endpoint + '/' + resource, {
             method: type,
             body: JSON.stringify(body),
             headers: headers,
-            mode: "cors"
+            mode: "cors",
+            timeout: 30000
         }).then(res => {
             return res.json();
         }, err => {

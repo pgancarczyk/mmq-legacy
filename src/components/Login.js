@@ -7,6 +7,16 @@ class Login extends Component {
         this.props.callbacks.login(e.target.inputLoginName.value, e.target.inputLoginPassword.value);
     }
 
+    register(e) {
+        e.preventDefault();
+        this.props.callbacks.register(e.target.inputRegisterName.value, e.target.inputRegisterPassword.value);
+    }
+
+    guest(e) {
+        e.preventDefault();
+        this.props.callbacks.guest(e.target.inputGuestName.value);
+    }
+
     render() {
         return(
             <div className="modal fade" id="loginModal" data-backdrop="static" tabIndex="-1" role="dialog">
@@ -27,10 +37,10 @@ class Login extends Component {
                                     </div>
                                     <button className="btn btn-success btn-block" type="submit">zaloguj</button>
                                 </form>
-                                <p className="loginMsg text-danger">{this.props.msg}</p>
+                                <p className="loginMsg text-danger">{this.props.loginMsg ? this.props.loginMsg : '\u00A0'}</p>
                             </div>
                             <div className="carousel-item">
-                                <form className="form-login">
+                                <form className="form-login" onSubmit={this.register.bind(this)}>
                                     <h1 className="h4 mb-4 font-weight-normal">zarejestruj się</h1>
                                     <input type="text" name="inputRegisterName" className="form-control"
                                            placeholder="nazwa użytkownika" required autoFocus/>
@@ -38,18 +48,20 @@ class Login extends Component {
                                            placeholder="hasło" required/>
                                     <div className="checkbox mb-3">
                                     </div>
-                                    <button className="btn btn-success btn-block" type="button" data-dismiss="modal">zarejestruj</button>
+                                    <button className="btn btn-success btn-block" type="submit" >zarejestruj</button>
                                 </form>
+                                <p className="loginMsg text-danger">{this.props.registerMsg ? this.props.registerMsg : '\u00A0'}</p>
                             </div>
                             <div className="carousel-item">
-                                <form className="form-guest">
+                                <form className="form-guest" onSubmit={this.guest.bind(this)}>
                                     <h1 className="h4 mb-4 font-weight-normal">graj jako gość</h1>
-                                    <input type="text" name="inputGuest" className="form-control"
+                                    <input type="text" name="inputGuestName" className="form-control"
                                            placeholder="imię" required autoFocus/>
                                     <div className="checkbox mb-3">
                                     </div>
-                                    <button className="btn btn-success btn-block" type="button" data-dismiss="modal">kontynuuj</button>
+                                    <button className="btn btn-success btn-block" type="submit">kontynuuj</button>
                                 </form>
+                                <p className="loginMsg text-danger">{this.props.guestMsg ? this.props.guestMsg : '\u00A0'}</p>
                             </div>
                         </div>
                         <div className="modal-footer">
