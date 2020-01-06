@@ -35,12 +35,6 @@ const auth = {
             next();
         }
     },
-    /*remember: (req, res, next) => {
-        if(req.isAuthenticated()) {
-            console.log(req.isAuthenticated());
-        }
-        next();
-    }*/
 };
 
 module.exports = auth;

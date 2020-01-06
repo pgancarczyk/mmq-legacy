@@ -178,7 +178,6 @@ class Client extends Component {
 
     gotIt() {
         this.setState({newSong: false});
-        console.log('setting newSong to false');
     }
 
     reportGameState(state) {

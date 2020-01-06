@@ -38,10 +38,6 @@ class Content extends Component {
         api.call('admin/song/'+id, 'DELETE').then(res => {
             if (res.message && res.message === 'ok') {
                 this.getSongs(this.state.songsPage);
-                /*let songs = this.state.songs;
-                let index = songs.findIndex(song => song.id === id);
-                songs.splice(index, 1);
-                this.setState({songs: songs});*/
             }
         });
     }

@@ -9,19 +9,12 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            auth: true,
-            role: 'ADMIN',
-            name: 'konf',
-            loginMsg: '',
-            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNTgzMzQ1MjI5LCJpYXQiOjE1NzgxNjEyMjl9.WlPYMNZd8sexq0rSTFS5_rkgwmyLQtzLNaK7go6R76w',
-        };
-        /*this.state = {
             auth: false,
             role: '',
             name: '',
             loginMsg: '',
             token: '',
-        };*/
+        };
     }
 
     login(name, password, remember) {
