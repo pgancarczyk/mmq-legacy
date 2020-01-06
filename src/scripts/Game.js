@@ -1,6 +1,6 @@
 const sequelize = require('./db');
 const Song = require('../../models/Song');
-const User = require('../../models/User');
+const { User } = require('../../models/User');
 const Player = require('./Player');
 
 class Game {
@@ -45,12 +45,14 @@ class Game {
         if (stringOrUser instanceof User) name = stringOrUser.name;
         else if (typeof stringOrUser === 'string') name = stringOrUser;
         else throw 'getIndex needs either User object or a string, ' + typeof (stringOrUser) + ' provided';
-        let p = this.findGuest(stringOrUser);
+        let p = this.findGuest(name);
         if (p) return this.players.indexOf(p);
         else return this.players.push(new Player(stringOrUser))-1;
     }
 
     findGuest(name) {
+        console.log('looking for player ' + name + '. currently playing:');
+        console.log(this.players);
         return this.players.find(p => p.name === name);
     }
 

@@ -1,5 +1,5 @@
 class Api {
-    endpoint = 'http://192.168.55.104:5000/api';
+    endpoint = 'http://localhost:5000/api';
     token = "";
     guestName = "";
     call(resource, type, body) {

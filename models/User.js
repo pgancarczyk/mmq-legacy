@@ -29,7 +29,18 @@ User.init({
     modelName: 'user',
 });
 
-User.sync({alter: process.env.NODE_ENV === 'dev'});
+class Token extends Model {}
+Token.init({
+    value: {
+        type: Sequelize.STRING
+    }
+}, {
+    sequelize,
+    modelName: 'token',
+});
+
+Token.belongsTo(User);
+User.hasMany(Token);
 
 User.prototype.validatePassword = function(password) {
     const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
@@ -57,4 +68,7 @@ User.prototype.getAuthData = function() {
     }
 }
 
-module.exports = User;
+module.exports = {
+    User: User,
+    Token: Token
+};

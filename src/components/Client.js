@@ -1,15 +1,17 @@
+import '../scripts/client.css';
 import React, {Component} from 'react';
-import Player from "./Player";
+import Player from "./Client/Player";
 import Header from "./Header";
-import Ranking from "./Ranking";
-import Input from "./Input";
+import Ranking from "./Client/Ranking";
+import Input from "./Client/Input";
 import Footer from "./Footer";
-import History from "./History";
-import Progress from "./Progress";
+import History from "./Client/History";
+import Progress from "./Client/Progress";
 import levenshteinDistance from "../scripts/levenshteinDistance";
-import Login from "./Login";
+import Login from "./Client/Login";
 import $ from 'jquery';
 const api = require('../scripts/api');
+
 
 class Client extends Component {
     constructor(props) {
@@ -143,13 +145,13 @@ class Client extends Component {
             this.reportGuessed(guessed);
             window.showPlayer();
         }
-        else if (title.length === 0 && guessed !== 'TITLE') {
+        else if (title.length === 0 && guessed !== 'TITLE' && guessed !== 'BOTH') {
             response = "Świetnie, zgadłeś tytuł!";
             guessed = "TITLE";
             this.reportGuessed(guessed);
         }
 
-        else if (author.length === 0 && guessed !== 'ARTIST') {
+        else if (author.length === 0 && guessed !== 'TITLE' && guessed !== 'BOTH') {
             response = "Gratulację, odgadłeś wykonawcę!";
             guessed = "ARTIST";
             this.reportGuessed(guessed);
@@ -222,7 +224,7 @@ class Client extends Component {
                                 </div>
                                 <div className="col">
                                     <div className="card-transparent mb-4">
-                                        <Ranking players={this.state.players}/>
+                                        <Ranking role={this.state.role} players={this.state.players}/>
                                     </div>
                                 </div>
                             </div>
@@ -236,7 +238,6 @@ class Client extends Component {
     update() {
         api.call('update', 'GET').then(res => {
             if (res && res.message && res.message === 'ok') {
-                console.log('update received. time = ' + new Date().getSeconds() + ":" + new Date().getMilliseconds());
                 if (res.songs) {
                     this.setState({songs: res.songs});
                     this.updateSongState();
@@ -288,7 +289,6 @@ class Client extends Component {
             title.forEach((word, index, arr) => {
                 arr[index] = word.split("|")
             });
-            console.log('setting newSong to true');
             this.setState({newSong: true, "videoId": result.videoID, "title": title, "author": author, guessed: "none", progress: 0, startTime: this.state.songs[0].startTime});
         }
     }

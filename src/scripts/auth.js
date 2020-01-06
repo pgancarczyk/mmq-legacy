@@ -1,5 +1,5 @@
 const jwt = require('express-jwt');
-const User = require('../../models/User');
+const { User } = require('../../models/User');
 
 const getTokenFromHeaders = (req) => {
     const { headers: { authorization }} = req;
@@ -35,6 +35,12 @@ const auth = {
             next();
         }
     },
+    /*remember: (req, res, next) => {
+        if(req.isAuthenticated()) {
+            console.log(req.isAuthenticated());
+        }
+        next();
+    }*/
 };
 
 module.exports = auth;

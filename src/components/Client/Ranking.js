@@ -1,6 +1,12 @@
 import React, {Component} from 'react'
+import $ from "jquery";
 
 class Ranking extends Component {
+    registerModal() {
+        $('#loginModal').modal();
+        $('#carouselModal').carousel(1);
+    }
+
     render() {
         return(
             <div className="card-body">
@@ -42,8 +48,8 @@ class Ranking extends Component {
                 </ol>
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="btn-group">
-                        <button type="button" className="btn btn-sm btn-outline-secondary">zmień imię</button>
-                        <button type="button" className="btn btn-sm btn-outline-secondary">zarejestruj</button>
+                        {/*<button type="button" className="btn btn-sm btn-outline-secondary">zmień imię</button>*/}
+                        {this.props.role === 'GUEST' && <button type="button" onClick={this.registerModal.bind(this)} className="btn btn-sm btn-outline-secondary">zarejestruj</button>}
                     </div>
                 </div>
             </div>

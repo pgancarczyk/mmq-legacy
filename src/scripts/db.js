@@ -12,6 +12,8 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     }
 });
 
+sequelize.sync({alter: process.env.NODE_ENV === 'dev'});
+
 sequelize
     .authenticate()
     .then(() => {

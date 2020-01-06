@@ -1,0 +1,59 @@
+.jumbotron {
+  margin: 0 auto;
+  background-color: #000;
+  padding: 0;
+  border-radius: 0;
+}
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.jumbotron h1 {
+  font-weight: 300;
+}
+
+.jumbotron .container {
+  margin: 0 auto;
+  padding: 0;
+  font-size: 0;
+}
+
+#player {
+  width: 640px;
+  height: 385px;
+  margin: auto;
+}
+
+.input input {
+  text-align: center;
+}
+
+.input {
+  padding-top: 0 !important;
+}
+
+li {
+  margin-top: 4px;
+}
+
+#response {
+  display: none;
+  position: relative;
+  top: -185px;
+  padding: 0;
+  margin: -185px 0 0;
+}
+
+#response h1 {
+  margin-bottom: 0;
+  line-height: 0;
+}
+
+.progress, .progress-bar {
+  border-radius: 0;
+}
+
+.ytp-show-cards-title {
+  display: none;
+}
