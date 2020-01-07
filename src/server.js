@@ -18,10 +18,13 @@ server.use(session({secret: process.env.SESSION_SECRET, resave: false, saveUnini
 server.use(passport.initialize());
 server.use(passport.session());
 server.use(passport.authenticate('remember-me'));
-server.use(express.static(path.join(__dirname, 'client/build')));
+server.use(express.static(path.join(__dirname, '/../build')));
 const apiRouter = require('../routes/api');
 server.use('/api', apiRouter);
 
+server.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/../build/index.html'));
+});
 
 // error handler
 server.use((err, req, res, next) => {

@@ -1,5 +1,5 @@
 class Api {
-    endpoint = 'http://localhost:5000/api';
+    endpoint = '/api';
     token = "";
     guestName = "";
     call(resource, type, body) {
@@ -21,4 +21,4 @@ class Api {
     }
 }
 
-module.exports = new Api();
+export default new Api();

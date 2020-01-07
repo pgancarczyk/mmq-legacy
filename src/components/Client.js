@@ -11,7 +11,7 @@ import levenshteinDistance from "../scripts/levenshteinDistance";
 import Login from "./Client/Login";
 import $ from 'jquery';
 import Score from "./Client/Score";
-const api = require('../scripts/api');
+import api from '../scripts/api';
 
 
 class Client extends Component {

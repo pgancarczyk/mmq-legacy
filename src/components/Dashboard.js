@@ -3,7 +3,7 @@ import '../scripts/dashboard.css';
 import Login from './Dashboard/Login';
 import Content from "./Dashboard/Content";
 import $ from 'jquery';
-const api = require('../scripts/api');
+import api from '../scripts/api';
 
 class Dashboard extends Component {
     constructor(props) {

@@ -4,7 +4,7 @@ import Nav from "./Nav";
 import Songs from "./Songs";
 import Users from "./Users";
 import Footer from "../Footer";
-const api = require('../../scripts/api');
+import api from '../../scripts/api';
 
 class Content extends Component {
     constructor(props) {
