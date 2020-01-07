@@ -10,6 +10,7 @@ import Progress from "./Client/Progress";
 import levenshteinDistance from "../scripts/levenshteinDistance";
 import Login from "./Client/Login";
 import $ from 'jquery';
+import Score from "./Client/Score";
 const api = require('../scripts/api');
 
 
@@ -31,7 +32,9 @@ class Client extends Component {
             songs: [],
             players: [],
             startTime: 42323,
-            newSong: true
+            newSong: true,
+            showScore: false,
+            round: 0,
         }
     }
 
@@ -181,7 +184,8 @@ class Client extends Component {
     }
 
     reportGameState(state) {
-        this.setState({gameState: state});
+        let showScore = (state === 'show' && this.state.round === 10);
+        this.setState({gameState: state, showScore: showScore});
     }
 
     render() {
@@ -198,6 +202,7 @@ class Client extends Component {
         return (
             <div className="App">
                 <Login callbacks={loginCallbacks} loginMsg={this.state.loginMsg} registerMsg={this.state.registerMsg} guestMsg={this.state.guestMsg}/>
+                <Score name={this.state.name} show={this.state.showScore} players={this.state.players}/>
                 <Header guessed={this.state.guessed} name={this.state.name} role={this.state.role}/>
                 <main role="main">
                     <section className="jumbotron text-center">
@@ -217,13 +222,13 @@ class Client extends Component {
                                 <div className="col-6">
                                     <div className="card-transparent mb-5">
                                         <div className="card-body">
-                                            <Input gameState={this.state.gameState} callback={this.guess.bind(this)}/>
+                                            <Input round={this.state.round} gameState={this.state.gameState} callback={this.guess.bind(this)}/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col">
                                     <div className="card-transparent mb-4">
-                                        <Ranking role={this.state.role} players={this.state.players}/>
+                                        <Ranking name={this.state.name} role={this.state.role} players={this.state.players}/>
                                     </div>
                                 </div>
                             </div>
@@ -242,6 +247,7 @@ class Client extends Component {
                     this.updateSongState();
                 }
                 if (res.players) this.setState({players: res.players});
+                if (res.round) this.setState({round: res.round});
             }
             this.update();
         });

@@ -35,7 +35,7 @@ class Ranking extends Component {
                         return(
                             <li key={player.name}>
                                 <span className={"badge badge-pill badge-" + color}> {player.score}pkt.</span>
-                                <span className={player.isUser ? "" : "text-dark"}> {player.name} </span>
+                                <span className={(player.name === this.props.name && "font-weight-bold ")+(player.isUser && "text-dark")}> {player.name} </span>
                                 {pointsAdded ? <span className={"text-" + color}>+{pointsAdded}</span> : ""}
                             </li>
                         )

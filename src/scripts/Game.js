@@ -6,11 +6,11 @@ const Player = require('./Player');
 class Game {
     constructor(longpoll) {
         this.longpoll = longpoll;
+        this.players = [];
+        this.songs = [];
+        this.round = 1;
         setTimeout(this.endRound.bind(this), this.getDelayTill(0));
     }
-
-    players = [];
-    songs = [];
 
     getCurrentHalfMinute() {
         return  Math.floor(new Date().getTime() / (30 * 1000)) * 30;
@@ -51,8 +51,6 @@ class Game {
     }
 
     findGuest(name) {
-        console.log('looking for player ' + name + '. currently playing:');
-        console.log(this.players);
         return this.players.find(p => p.name === name);
     }
 
@@ -82,9 +80,14 @@ class Game {
         }
         this.getNewSong().then(song => {
             this.addSong(song);
-            console.log('publishing. time = ' + new Date().getSeconds() + ":" + new Date().getMilliseconds());
-            this.longpoll.publish('/update', {message: 'ok', players: this.getPlayers(), songs: this.getSongs()});
-            console.log('ending round in ' + this.getDelayTill(0))
+            this.longpoll.publish('/update', {message: 'ok', players: this.getPlayers(), songs: this.getSongs(), round: this.round});
+            this.round += 1;
+            if (this.round > 10) {
+                this.round = 1;
+                console.log('End of the game. Scores:');
+                console.log(this.getPlayers());
+                this.players = [];
+            }
             setTimeout(this.endRound.bind(this), this.getDelayTill(0));
         });
 

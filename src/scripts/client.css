@@ -57,3 +57,11 @@ li {
 .ytp-show-cards-title {
   display: none;
 }
+
+.list-score {
+  margin: 15px auto 30px;
+}
+
+ol li, ul li {
+  font-size: 1rem;
+}
